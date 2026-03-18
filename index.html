@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rev.io Connections</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #f9f7f2; color: #1a1a1a; min-height: 100vh; }
+
+  header { background: #1a1a6e; color: white; text-align: center; padding: 18px 20px 14px; border-bottom: 4px solid #f0c040; }
+  header h1 { font-size: 26px; letter-spacing: 1px; font-weight: 700; }
+  header p { font-size: 12px; letter-spacing: 2px; opacity: 0.75; margin-top: 2px; text-transform: uppercase; }
+  .week-badge { display: inline-block; background: #f0c040; color: #1a1a6e; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-top: 6px; letter-spacing: 1px; }
+
+  .instructions { text-align: center; font-size: 13px; color: #555; padding: 10px 20px 6px; }
+
+  .mistakes { text-align: center; padding: 8px; font-size: 13px; color: #444; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 4px; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: #333; }
+  .dot.used { background: #ccc; }
+
+  .game-area { max-width: 580px; margin: 0 auto; padding: 10px 16px 20px; }
+
+  .solved-area { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+  .solved-row { border-radius: 8px; padding: 12px 16px; text-align: center; }
+  .solved-row .cat-name { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .solved-row .cat-words { font-size: 14px; margin-top: 2px; opacity: 0.9; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+  .tile {
+    background: #e8e6df;
+    border: none;
+    border-radius: 6px;
+    padding: 0;
+    height: 64px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    line-height: 1.2;
+    user-select: none;
+    color: #1a1a1a;
+  }
+  .tile:hover { background: #d6d4cc; }
+  .tile.selected { background: #5a5a5a; color: white; }
+  .tile.shake { animation: shake 0.4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
+  .tile.pop { animation: pop 0.3s; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+
+  .btn-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+  button.action {
+    border: 1.5px solid #333; background: white; border-radius: 30px;
+    padding: 8px 22px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s;
+  }
+  button.action:hover { background: #f0ede6; }
+  button.action.primary { background: #1a1a6e; color: white; border-color: #1a1a6e; }
+  button.action.primary:hover { background: #11115a; }
+  button.action:disabled { opacity: 0.4; cursor: default; }
+
+  .message { text-align: center; font-size: 14px; min-height: 22px; color: #444; margin-bottom: 4px; font-style: italic; }
+
+  .result-screen { display: none; text-align: center; padding: 20px; }
+  .result-screen h2 { font-size: 22px; margin-bottom: 8px; }
+  .result-screen p { font-size: 14px; color: #555; margin-bottom: 16px; }
+  .share-box { background: #fff; border: 1.5px solid #ccc; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 16px; letter-spacing: 2px; margin: 0 auto 16px; max-width: 280px; white-space: pre-wrap; line-height: 1.8; }
+  button.share-btn { background: #1a1a6e; color: white; border: none; border-radius: 30px; padding: 10px 28px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+  .category-hint { font-size: 11px; text-align: center; color: #888; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Rev.io Connections</h1>
+  <p>Group the terms by what they have in common</p>
+  <span class="week-badge">Week 1 — Service Module</span>
+</header>
+
+<div class="game-area">
+  <p class="instructions">Select 4 terms that belong to the same category, then hit Submit.</p>
+
+  <div class="mistakes">
+    Mistakes remaining:
+    <div class="dots">
+      <div class="dot" id="d0"></div>
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+    </div>
+  </div>
+
+  <div class="message" id="msg"></div>
+
+  <div class="solved-area" id="solved-area"></div>
+  <div class="grid" id="grid"></div>
+
+  <div class="btn-row">
+    <button class="action" id="shuffle-btn" onclick="shuffleTiles()">Shuffle</button>
+    <button class="action" id="deselect-btn" onclick="deselectAll()" disabled>Deselect all</button>
+    <button class="action primary" id="submit-btn" onclick="submitGuess()" disabled>Submit</button>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <h2 id="result-title"></h2>
+    <p id="result-sub"></p>
+    <div class="share-box" id="share-box"></div>
+    <button class="share-btn" onclick="copyResult()">Copy result</button>
+  </div>
+</div>
+
+<script>
+const CATEGORIES = [
+  {
+    name: "Found on a Ticket",
+    color: "#4a7c59", textColor: "#fff",
+    words: ["ACTIVITY", "TIME LOG", "TASK", "PURCHASE ORDER"],
+    hint: "These are all tabs you'll find inside a Service Ticket"
+  },
+  {
+    name: "Ways to Update a Customer Account",
+    color: "#b08a2e", textColor: "#fff",
+    words: ["ADD CHARGE", "ADD CREDIT", "ADD PAYMENT", "CREATE INVOICE"],
+    hint: "These are all Quick Actions available on a Customer Profile"
+  },
+  {
+    name: "Part of the Customer Profile",
+    color: "#2e5e8e", textColor: "#fff",
+    words: ["JOURNAL", "CONTACTS", "PORTAL USERS", "RELATED ACCOUNTS"],
+    hint: "These are all tabs found under the Overview section of a Customer Profile"
+  },
+  {
+    name: "Used to Schedule & Assign Work",
+    color: "#7a3b69", textColor: "#fff",
+    words: ["CALENDAR", "DISPATCH BOARD", "TICKET", "TIMELINE"],
+    hint: "These are all tools used in the Scheduling module to assign and track work"
+  }
+];
+
+let tiles = [];
+let selected = [];
+let mistakes = 0;
+let maxMistakes = 4;
+let solved = [];
+let guessHistory = [];
+let gameOver = false;
+
+const colorEmoji = { "#4a7c59": "🟢", "#b08a2e": "🟡", "#2e5e8e": "🔵", "#7a3b69": "🟣" };
+
+function init() {
+  tiles = CATEGORIES.flatMap(c => c.words.map(w => ({ word: w, category: c.name })));
+  shuffleTiles(true);
+}
+
+function shuffleTiles(first) {
+  const remaining = tiles.filter(t => !solved.includes(t.category));
+  for (let i = remaining.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+  }
+  tiles = [...tiles.filter(t => solved.includes(t.category)), ...remaining];
+  if (!first) renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  tiles.filter(t => !solved.includes(t.category)).forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'tile' + (selected.includes(t.word) ? ' selected' : '');
+    btn.textContent = t.word;
+    btn.id = 'tile-' + t.word.replace(/\s/g,'_');
+    btn.onclick = () => toggleSelect(t.word, btn);
+    grid.appendChild(btn);
+  });
+  updateButtons();
+}
+
+function toggleSelect(word, btn) {
+  if (gameOver) return;
+  if (selected.includes(word)) {
+    selected = selected.filter(w => w !== word);
+    btn.classList.remove('selected');
+  } else {
+    if (selected.length >= 4) return;
+    selected.push(word);
+    btn.classList.add('selected');
+    btn.classList.add('pop');
+    setTimeout(() => btn.classList.remove('pop'), 300);
+  }
+  updateButtons();
+}
+
+function deselectAll() {
+  selected = [];
+  document.querySelectorAll('.tile.selected').forEach(el => el.classList.remove('selected'));
+  updateButtons();
+}
+
+function updateButtons() {
+  const n = selected.length;
+  document.getElementById('submit-btn').disabled = n !== 4;
+  document.getElementById('deselect-btn').disabled = n === 0;
+}
+
+function submitGuess() {
+  if (selected.length !== 4) return;
+  const cat = CATEGORIES.find(c => {
+    const match = selected.every(w => c.words.includes(w)) && c.words.every(w => selected.includes(w));
+    return match;
+  });
+
+  const key = selected.slice().sort().join('|');
+  guessHistory.push({ correct: !!cat, words: selected.slice(), category: cat });
+
+  if (cat) {
+    solved.push(cat.name);
+    const row = document.createElement('div');
+    row.className = 'solved-row';
+    row.style.background = cat.color;
+    row.style.color = cat.textColor;
+    row.innerHTML = `<div class="cat-name">${cat.name}</div><div class="cat-words">${cat.words.join(', ')}</div>`;
+    document.getElementById('solved-area').appendChild(row);
+    tiles = tiles.filter(t => t.category !== cat.name);
+    selected = [];
+    showMsg('Correct! ' + cat.hint, '#2a7a2a');
+    if (solved.length === CATEGORIES.length) { setTimeout(endGame, 700); return; }
+  } else {
+    const almostCat = CATEGORIES.find(c => selected.filter(w => c.words.includes(w)).length === 3);
+    mistakes++;
+    document.getElementById('d' + (mistakes-1)).classList.add('used');
+    document.querySelectorAll('.tile.selected').forEach(el => {
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 400);
+    });
+    if (almostCat) { showMsg('One away! Keep thinking...', '#a05000'); }
+    else { showMsg('Not quite — try again!', '#a03030'); }
+    if (mistakes >= maxMistakes) { setTimeout(endGame, 700); return; }
+  }
+  selected = [];
+  renderGrid();
+}
+
+function showMsg(text, color) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.style.color = color || '#444';
+  setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+function endGame() {
+  gameOver = true;
+  document.getElementById('grid').innerHTML = '';
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('deselect-btn').disabled = true;
+  document.getElementById('shuffle-btn').disabled = true;
+
+  const won = solved.length === CATEGORIES.length;
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+  document.getElementById('result-title').textContent = won ? '🎉 You got it!' : 'Better luck next week!';
+  document.getElementById('result-sub').textContent = won
+    ? `Solved with ${mistakes} mistake${mistakes !== 1 ? 's' : ''}. Great work!`
+    : `You solved ${solved.length} of 4 categories.`;
+
+  let emojiGrid = 'Rev.io Connections – Week 1\n';
+  guessHistory.forEach(g => {
+    if (g.correct) {
+      emojiGrid += colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + '\n';
+    } else {
+      const counts = CATEGORIES.map(c => g.words.filter(w => c.words.includes(w)).length);
+      emojiGrid += counts.map((n,i) => colorEmoji[CATEGORIES[i].color].repeat(n)).join('') + '\n';
+    }
+  });
+  document.getElementById('share-box').textContent = emojiGrid.trim();
+}
+
+function copyResult() {
+  const text = document.getElementById('share-box').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.share-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy result', 1500);
+  });
+}
+
+init();
+renderGrid();
+
+</script>
+</body>
+</html>
