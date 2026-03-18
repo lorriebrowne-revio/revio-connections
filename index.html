@@ -6,79 +6,83 @@
 <title>Rev.io Connections</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Georgia', serif; background: #f9f7f2; color: #1a1a1a; min-height: 100vh; }
+  body { font-family: 'Arial', sans-serif; background: #1D3756; color: #ffffff; min-height: 100vh; }
 
-  header { background: #1a1a6e; color: white; text-align: center; padding: 18px 20px 14px; border-bottom: 4px solid #f0c040; }
-  header h1 { font-size: 26px; letter-spacing: 1px; font-weight: 700; }
-  header p { font-size: 12px; letter-spacing: 2px; opacity: 0.75; margin-top: 2px; text-transform: uppercase; }
-  .week-badge { display: inline-block; background: #f0c040; color: #1a1a6e; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-top: 6px; letter-spacing: 1px; }
+  header { background: #1D3756; text-align: center; padding: 20px 20px 16px; border-bottom: 3px solid #6EBE4F; }
+  .logo-area { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  .logo-text { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .logo-dot { color: #6EBE4F; }
+  .logo-tag { font-size: 11px; color: #6EBE4F; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+  .game-title { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-top: 4px; }
+  .week-badge { display: inline-block; background: #6EBE4F; color: #1D3756; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-top: 6px; letter-spacing: 1px; }
 
-  .instructions { text-align: center; font-size: 13px; color: #555; padding: 10px 20px 6px; }
+  .instructions { text-align: center; font-size: 13px; color: #aac4dd; padding: 10px 20px 4px; }
 
-  .mistakes { text-align: center; padding: 8px; font-size: 13px; color: #444; }
-  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 4px; }
-  .dot { width: 14px; height: 14px; border-radius: 50%; background: #333; }
-  .dot.used { background: #ccc; }
+  .mistakes { text-align: center; padding: 8px; font-size: 13px; color: #ccc; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 5px; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: #6EBE4F; }
+  .dot.used { background: #2e4f6e; }
 
-  .game-area { max-width: 580px; margin: 0 auto; padding: 10px 16px 20px; }
+  .game-area { max-width: 580px; margin: 0 auto; padding: 10px 16px 24px; }
 
   .solved-area { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
   .solved-row { border-radius: 8px; padding: 12px 16px; text-align: center; }
   .solved-row .cat-name { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-  .solved-row .cat-words { font-size: 14px; margin-top: 2px; opacity: 0.9; }
+  .solved-row .cat-words { font-size: 13px; margin-top: 3px; opacity: 0.9; }
 
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
   .tile {
-    background: #e8e6df;
-    border: none;
-    border-radius: 6px;
-    padding: 0;
-    height: 64px;
-    font-size: 13px;
+    background: #24486e;
+    border: 1.5px solid #2e5a80;
+    border-radius: 8px;
+    height: 68px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.4px;
     cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
     display: flex; align-items: center; justify-content: center; text-align: center;
-    line-height: 1.2;
+    line-height: 1.3; padding: 6px;
     user-select: none;
-    color: #1a1a1a;
+    color: #ffffff;
   }
-  .tile:hover { background: #d6d4cc; }
-  .tile.selected { background: #5a5a5a; color: white; }
+  .tile:hover { background: #2e5a80; border-color: #6EBE4F; }
+  .tile.selected { background: #6EBE4F; color: #1D3756; border-color: #6EBE4F; }
   .tile.shake { animation: shake 0.4s; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
   .tile.pop { animation: pop 0.3s; }
-  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.07)} 100%{transform:scale(1)} }
 
   .btn-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
   button.action {
-    border: 1.5px solid #333; background: white; border-radius: 30px;
+    border: 1.5px solid #4a7a9e; background: transparent; color: #fff; border-radius: 30px;
     padding: 8px 22px; font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s, border-color 0.15s;
   }
-  button.action:hover { background: #f0ede6; }
-  button.action.primary { background: #1a1a6e; color: white; border-color: #1a1a6e; }
-  button.action.primary:hover { background: #11115a; }
-  button.action:disabled { opacity: 0.4; cursor: default; }
+  button.action:hover { background: #24486e; border-color: #6EBE4F; }
+  button.action.primary { background: #6EBE4F; color: #1D3756; border-color: #6EBE4F; }
+  button.action.primary:hover { background: #5aaa3f; }
+  button.action:disabled { opacity: 0.35; cursor: default; }
 
-  .message { text-align: center; font-size: 14px; min-height: 22px; color: #444; margin-bottom: 4px; font-style: italic; }
+  .message { text-align: center; font-size: 14px; min-height: 22px; color: #ccc; margin-bottom: 4px; font-style: italic; }
 
   .result-screen { display: none; text-align: center; padding: 20px; }
-  .result-screen h2 { font-size: 22px; margin-bottom: 8px; }
-  .result-screen p { font-size: 14px; color: #555; margin-bottom: 16px; }
-  .share-box { background: #fff; border: 1.5px solid #ccc; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 16px; letter-spacing: 2px; margin: 0 auto 16px; max-width: 280px; white-space: pre-wrap; line-height: 1.8; }
-  button.share-btn { background: #1a1a6e; color: white; border: none; border-radius: 30px; padding: 10px 28px; font-size: 14px; font-weight: 600; cursor: pointer; }
-
-  .category-hint { font-size: 11px; text-align: center; color: #888; margin-bottom: 8px; }
+  .result-screen h2 { font-size: 24px; margin-bottom: 8px; color: #6EBE4F; }
+  .result-screen p { font-size: 14px; color: #aac4dd; margin-bottom: 16px; }
+  .share-box { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 18px; letter-spacing: 2px; margin: 0 auto 16px; max-width: 280px; white-space: pre-wrap; line-height: 2; }
+  button.share-btn { background: #6EBE4F; color: #1D3756; border: none; border-radius: 30px; padding: 10px 28px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  button.share-btn:hover { background: #5aaa3f; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Rev.io Connections</h1>
-  <p>Group the terms by what they have in common</p>
+  <div class="logo-area">
+    <div class="logo-text">Rev<span class="logo-dot">.</span>io</div>
+  </div>
+  <div class="logo-tag">PSA Knowledge Game</div>
+  <div class="game-title">Connections</div>
   <span class="week-badge">Week 1 — Service Module</span>
 </header>
 
@@ -118,39 +122,38 @@
 const CATEGORIES = [
   {
     name: "Found on a Ticket",
-    color: "#4a7c59", textColor: "#fff",
+    color: "#1a6644", textColor: "#fff",
     words: ["ACTIVITY", "TIME LOG", "TASK", "PURCHASE ORDER"],
     hint: "These are all tabs you'll find inside a Service Ticket"
   },
   {
     name: "Ways to Update a Customer Account",
-    color: "#b08a2e", textColor: "#fff",
+    color: "#7a5c00", textColor: "#fff",
     words: ["ADD CHARGE", "ADD CREDIT", "ADD PAYMENT", "CREATE INVOICE"],
-    hint: "These are all Quick Actions available on a Customer Profile"
+    hint: "These are all Quick Actions on a Customer Profile"
   },
   {
     name: "Part of the Customer Profile",
-    color: "#2e5e8e", textColor: "#fff",
+    color: "#0d3d6b", textColor: "#fff",
     words: ["JOURNAL", "CONTACTS", "PORTAL USERS", "RELATED ACCOUNTS"],
-    hint: "These are all tabs found under the Overview section of a Customer Profile"
+    hint: "These are tabs under the Overview section of a Customer Profile"
   },
   {
     name: "Used to Schedule & Assign Work",
-    color: "#7a3b69", textColor: "#fff",
+    color: "#4a1a5e", textColor: "#fff",
     words: ["CALENDAR", "DISPATCH BOARD", "TICKET", "TIMELINE"],
-    hint: "These are all tools used in the Scheduling module to assign and track work"
+    hint: "These tools in the Scheduling module help assign and track work"
   }
 ];
 
-let tiles = [];
-let selected = [];
-let mistakes = 0;
-let maxMistakes = 4;
-let solved = [];
-let guessHistory = [];
-let gameOver = false;
+const colorEmoji = {
+  "#1a6644": "🟢",
+  "#7a5c00": "🟡",
+  "#0d3d6b": "🔵",
+  "#4a1a5e": "🟣"
+};
 
-const colorEmoji = { "#4a7c59": "🟢", "#b08a2e": "🟡", "#2e5e8e": "🔵", "#7a3b69": "🟣" };
+let tiles = [], selected = [], mistakes = 0, solved = [], guessHistory = [], gameOver = false;
 
 function init() {
   tiles = CATEGORIES.flatMap(c => c.words.map(w => ({ word: w, category: c.name })));
@@ -174,7 +177,6 @@ function renderGrid() {
     const btn = document.createElement('button');
     btn.className = 'tile' + (selected.includes(t.word) ? ' selected' : '');
     btn.textContent = t.word;
-    btn.id = 'tile-' + t.word.replace(/\s/g,'_');
     btn.onclick = () => toggleSelect(t.word, btn);
     grid.appendChild(btn);
   });
@@ -210,37 +212,32 @@ function updateButtons() {
 
 function submitGuess() {
   if (selected.length !== 4) return;
-  const cat = CATEGORIES.find(c => {
-    const match = selected.every(w => c.words.includes(w)) && c.words.every(w => selected.includes(w));
-    return match;
-  });
-
-  const key = selected.slice().sort().join('|');
+  const cat = CATEGORIES.find(c =>
+    selected.every(w => c.words.includes(w)) && c.words.every(w => selected.includes(w))
+  );
   guessHistory.push({ correct: !!cat, words: selected.slice(), category: cat });
-
   if (cat) {
     solved.push(cat.name);
     const row = document.createElement('div');
     row.className = 'solved-row';
     row.style.background = cat.color;
     row.style.color = cat.textColor;
-    row.innerHTML = `<div class="cat-name">${cat.name}</div><div class="cat-words">${cat.words.join(', ')}</div>`;
+    row.innerHTML = `<div class="cat-name">${cat.name}</div><div class="cat-words">${cat.words.join(' · ')}</div>`;
     document.getElementById('solved-area').appendChild(row);
     tiles = tiles.filter(t => t.category !== cat.name);
     selected = [];
-    showMsg('Correct! ' + cat.hint, '#2a7a2a');
+    showMsg('Correct! ' + cat.hint, '#6EBE4F');
     if (solved.length === CATEGORIES.length) { setTimeout(endGame, 700); return; }
   } else {
-    const almostCat = CATEGORIES.find(c => selected.filter(w => c.words.includes(w)).length === 3);
+    const almost = CATEGORIES.find(c => selected.filter(w => c.words.includes(w)).length === 3);
     mistakes++;
-    document.getElementById('d' + (mistakes-1)).classList.add('used');
+    document.getElementById('d' + (mistakes - 1)).classList.add('used');
     document.querySelectorAll('.tile.selected').forEach(el => {
       el.classList.add('shake');
       setTimeout(() => el.classList.remove('shake'), 400);
     });
-    if (almostCat) { showMsg('One away! Keep thinking...', '#a05000'); }
-    else { showMsg('Not quite — try again!', '#a03030'); }
-    if (mistakes >= maxMistakes) { setTimeout(endGame, 700); return; }
+    showMsg(almost ? 'One away! Keep thinking...' : 'Not quite — try again!', '#ff8c69');
+    if (mistakes >= 4) { setTimeout(endGame, 700); return; }
   }
   selected = [];
   renderGrid();
@@ -249,40 +246,34 @@ function submitGuess() {
 function showMsg(text, color) {
   const el = document.getElementById('msg');
   el.textContent = text;
-  el.style.color = color || '#444';
+  el.style.color = color || '#ccc';
   setTimeout(() => { el.textContent = ''; }, 3000);
 }
 
 function endGame() {
   gameOver = true;
   document.getElementById('grid').innerHTML = '';
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('deselect-btn').disabled = true;
-  document.getElementById('shuffle-btn').disabled = true;
-
+  ['submit-btn','deselect-btn','shuffle-btn'].forEach(id => document.getElementById(id).disabled = true);
   const won = solved.length === CATEGORIES.length;
-  const rs = document.getElementById('result-screen');
-  rs.style.display = 'block';
-  document.getElementById('result-title').textContent = won ? '🎉 You got it!' : 'Better luck next week!';
+  document.getElementById('result-screen').style.display = 'block';
+  document.getElementById('result-title').textContent = won ? 'You got it!' : 'Better luck next week!';
   document.getElementById('result-sub').textContent = won
     ? `Solved with ${mistakes} mistake${mistakes !== 1 ? 's' : ''}. Great work!`
     : `You solved ${solved.length} of 4 categories.`;
-
   let emojiGrid = 'Rev.io Connections – Week 1\n';
   guessHistory.forEach(g => {
     if (g.correct) {
-      emojiGrid += colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + colorEmoji[g.category ? CATEGORIES.find(c=>c.name===g.category.name).color : '#ccc'] + '\n';
+      const e = colorEmoji[CATEGORIES.find(c => c.name === g.category.name).color];
+      emojiGrid += e + e + e + e + '\n';
     } else {
-      const counts = CATEGORIES.map(c => g.words.filter(w => c.words.includes(w)).length);
-      emojiGrid += counts.map((n,i) => colorEmoji[CATEGORIES[i].color].repeat(n)).join('') + '\n';
+      emojiGrid += CATEGORIES.map(c => colorEmoji[c.color].repeat(g.words.filter(w => c.words.includes(w)).length)).join('') + '\n';
     }
   });
   document.getElementById('share-box').textContent = emojiGrid.trim();
 }
 
 function copyResult() {
-  const text = document.getElementById('share-box').textContent;
-  navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText(document.getElementById('share-box').textContent).then(() => {
     const btn = document.querySelector('.share-btn');
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy result', 1500);
@@ -291,7 +282,6 @@ function copyResult() {
 
 init();
 renderGrid();
-
 </script>
 </body>
 </html>
