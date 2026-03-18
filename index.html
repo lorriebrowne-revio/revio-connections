@@ -323,8 +323,21 @@ function submitScore() {
   document.getElementById('form-thanks').style.display = 'block';
 }
 
-init();
-renderGrid();
+  gameOver = false;
+  solved = [];
+  guessHistory = [];
+  mistakes = 0;
+  selected = [];
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('answer-reveal').style.display = 'none';
+  document.getElementById('solved-area').innerHTML = '';
+  document.getElementById('score-form').style.display = 'block';
+  document.getElementById('form-thanks').style.display = 'none';
+  ['d0','d1','d2','d3'].forEach(id => document.getElementById(id).classList.remove('used'));
+  document.getElementById('shuffle-btn').disabled = false;
+  tiles = CATEGORIES.flatMap(c => c.words.map(w => ({ word: w, category: c.name })));
+  shuffleTiles(true);
+  renderGrid();
 </script>
 </body>
 </html>
