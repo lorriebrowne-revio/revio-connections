@@ -73,6 +73,14 @@
   .share-box { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 18px; letter-spacing: 2px; margin: 0 auto 16px; max-width: 280px; white-space: pre-wrap; line-height: 2; }
   button.share-btn { background: #6EBE4F; color: #1D3756; border: none; border-radius: 30px; padding: 10px 28px; font-size: 14px; font-weight: 700; cursor: pointer; }
   button.share-btn:hover { background: #5aaa3f; }
+  .score-form { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 10px; padding: 18px; margin-top: 16px; }
+  .score-form p { font-size: 14px; color: #aac4dd; margin-bottom: 12px; }
+  .score-form input { width: 100%; padding: 8px 12px; margin-bottom: 8px; border-radius: 6px; border: 1.5px solid #2e5a80; background: #1D3756; color: #fff; font-size: 13px; }
+  .score-form input::placeholder { color: #6a8faa; }
+  .score-form select { width: 100%; padding: 8px 12px; margin-bottom: 12px; border-radius: 6px; border: 1.5px solid #2e5a80; background: #1D3756; color: #fff; font-size: 13px; }
+  button.submit-score { background: #6EBE4F; color: #1D3756; border: none; border-radius: 30px; padding: 9px 26px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  button.submit-score:hover { background: #5aaa3f; }
+  .form-thanks { display: none; color: #6EBE4F; font-size: 14px; margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -115,7 +123,21 @@
     <p id="result-sub"></p>
     <div class="share-box" id="share-box"></div>
     <button class="share-btn" onclick="copyResult()">Copy result</button>
-  </div>
+
+    <div class="score-form" id="score-form">
+      <p>Want to log your score? Enter your details below!</p>
+      <input type="text" id="player-name" placeholder="Your name" />
+      <input type="email" id="player-email" placeholder="Your email" />
+      <select id="player-score">
+        <option value="">How did you do?</option>
+        <option value="no-mistakes">Solved it with no mistakes!</option>
+        <option value="1-2-mistakes">Solved it with 1–2 mistakes</option>
+        <option value="3-4-mistakes">Solved it with 3–4 mistakes</option>
+        <option value="didnt-finish">Didn't finish this time</option>
+      </select>
+      <button class="submit-score" onclick="submitScore()">Submit my score</button>
+      <div class="form-thanks" id="form-thanks">Thanks for playing! See you next week. 🎉</div>
+    </div>
 </div>
 
 <script>
@@ -272,7 +294,22 @@ function endGame() {
   document.getElementById('share-box').textContent = emojiGrid.trim();
 }
 
-function copyResult() {
+function submitScore() {
+  const name = document.getElementById('player-name').value.trim();
+  const email = document.getElementById('player-email').value.trim();
+  const score = document.getElementById('player-score').value;
+  if (!name || !email || !score) {
+    alert('Please fill in all fields before submitting!');
+    return;
+  }
+  const formUrl = 'https://forms.office.com/r/bqvCzbMciJ';
+  window.open(formUrl, '_blank');
+  document.getElementById('score-form').style.display = 'none';
+  document.getElementById('form-thanks').style.display = 'block';
+  document.getElementById('form-thanks').style.marginTop = '0';
+}
+
+
   navigator.clipboard.writeText(document.getElementById('share-box').textContent).then(() => {
     const btn = document.querySelector('.share-btn');
     btn.textContent = 'Copied!';
