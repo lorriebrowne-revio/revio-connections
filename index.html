@@ -7,71 +7,46 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Arial', sans-serif; background: #1D3756; color: #ffffff; min-height: 100vh; }
-
   header { background: #1D3756; text-align: center; padding: 20px 20px 16px; border-bottom: 3px solid #6EBE4F; }
   .logo-text { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
   .logo-dot { color: #6EBE4F; }
   .logo-tag { font-size: 11px; color: #6EBE4F; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-top: 4px; }
   .game-title { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-top: 4px; }
   .week-badge { display: inline-block; background: #6EBE4F; color: #1D3756; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-top: 6px; letter-spacing: 1px; }
-
   .game-area { max-width: 580px; margin: 0 auto; padding: 10px 16px 24px; }
   .instructions { text-align: center; font-size: 13px; color: #aac4dd; padding: 10px 0 4px; }
-
   .mistakes { text-align: center; padding: 8px; font-size: 13px; color: #ccc; }
   .dots { display: flex; justify-content: center; gap: 6px; margin-top: 5px; }
   .dot { width: 14px; height: 14px; border-radius: 50%; background: #6EBE4F; }
   .dot.used { background: #2e4f6e; }
-
   .message { text-align: center; font-size: 14px; min-height: 22px; color: #ccc; margin-bottom: 4px; font-style: italic; }
-
   .solved-area { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
   .solved-row { border-radius: 8px; padding: 12px 16px; text-align: center; }
   .solved-row .cat-name { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
   .solved-row .cat-words { font-size: 13px; margin-top: 3px; opacity: 0.9; }
-
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
-  .tile {
-    background: #24486e; border: 1.5px solid #2e5a80; border-radius: 8px;
-    height: 68px; font-size: 12px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.4px; cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; line-height: 1.3; padding: 6px;
-    user-select: none; color: #ffffff;
-  }
+  .tile { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 8px; height: 68px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; cursor: pointer; transition: background 0.15s, border-color 0.15s, transform 0.1s; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.3; padding: 6px; user-select: none; color: #ffffff; }
   .tile:hover { background: #2e5a80; border-color: #6EBE4F; }
   .tile.selected { background: #6EBE4F; color: #1D3756; border-color: #6EBE4F; }
   .tile.shake { animation: shake 0.4s; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
   .tile.pop { animation: pop 0.3s; }
   @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.07)} 100%{transform:scale(1)} }
-
   .btn-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
-  button.action {
-    border: 1.5px solid #4a7a9e; background: transparent; color: #fff;
-    border-radius: 30px; padding: 8px 22px; font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: background 0.15s, border-color 0.15s;
-  }
+  button.action { border: 1.5px solid #4a7a9e; background: transparent; color: #fff; border-radius: 30px; padding: 8px 22px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
   button.action:hover { background: #24486e; border-color: #6EBE4F; }
   button.action.primary { background: #6EBE4F; color: #1D3756; border-color: #6EBE4F; }
   button.action.primary:hover { background: #5aaa3f; }
   button.action:disabled { opacity: 0.35; cursor: default; }
-
   .result-screen { display: none; text-align: center; padding: 10px 0; }
   .result-screen h2 { font-size: 24px; margin-bottom: 8px; color: #6EBE4F; }
   .result-screen .result-sub { font-size: 14px; color: #aac4dd; margin-bottom: 16px; }
   .share-box { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 18px; letter-spacing: 2px; margin: 0 auto 16px; max-width: 280px; white-space: pre-wrap; line-height: 2; }
   button.share-btn { background: #6EBE4F; color: #1D3756; border: none; border-radius: 30px; padding: 10px 28px; font-size: 14px; font-weight: 700; cursor: pointer; }
   button.share-btn:hover { background: #5aaa3f; }
-
   .score-form { background: #24486e; border: 1.5px solid #2e5a80; border-radius: 10px; padding: 18px; margin-top: 20px; text-align: left; }
   .score-form p { font-size: 14px; color: #aac4dd; margin-bottom: 12px; text-align: center; }
-  .score-form input, .score-form select {
-    width: 100%; padding: 8px 12px; margin-bottom: 10px;
-    border-radius: 6px; border: 1.5px solid #2e5a80;
-    background: #1D3756; color: #fff; font-size: 13px;
-  }
+  .score-form input, .score-form select { width: 100%; padding: 8px 12px; margin-bottom: 10px; border-radius: 6px; border: 1.5px solid #2e5a80; background: #1D3756; color: #fff; font-size: 13px; }
   .score-form input::placeholder { color: #6a8faa; }
   .score-form select option { background: #1D3756; }
   .score-form-btn-row { text-align: center; }
@@ -81,44 +56,33 @@
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo-text">Rev<span class="logo-dot">.</span>io</div>
   <div class="logo-tag">PSA Knowledge Game</div>
   <div class="game-title">Connections</div>
   <span class="week-badge">Week 1 — Service Module</span>
 </header>
-
 <div class="game-area">
   <p class="instructions">Select 4 terms that belong to the same category, then hit Submit.</p>
-
-  <div class="mistakes">
-    Mistakes remaining:
+  <div class="mistakes">Mistakes remaining:
     <div class="dots">
-      <div class="dot" id="d0"></div>
-      <div class="dot" id="d1"></div>
-      <div class="dot" id="d2"></div>
-      <div class="dot" id="d3"></div>
+      <div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div>
     </div>
   </div>
-
   <div class="message" id="msg"></div>
   <div class="solved-area" id="solved-area"></div>
   <div class="grid" id="grid"></div>
-
   <div class="btn-row">
     <button class="action" id="shuffle-btn" onclick="shuffleTiles()">Shuffle</button>
     <button class="action" id="deselect-btn" onclick="deselectAll()" disabled>Deselect all</button>
     <button class="action primary" id="submit-btn" onclick="submitGuess()" disabled>Submit</button>
   </div>
-
   <div class="result-screen" id="result-screen">
     <h2 id="result-title"></h2>
     <p class="result-sub" id="result-sub"></p>
     <div class="share-box" id="share-box"></div>
-    <div id="answer-reveal" style="display:none; margin-bottom: 16px;"></div>
+    <div id="answer-reveal" style="display:none; margin-bottom:16px;"></div>
     <button class="share-btn" onclick="copyResult()">Copy result</button>
-
     <div class="score-form" id="score-form">
       <p>Enjoyed the game? Log your score below!</p>
       <input type="text" id="player-name" placeholder="Your name" />
@@ -126,218 +90,33 @@
       <select id="player-score">
         <option value="">How did you do?</option>
         <option value="Solved it with no mistakes!">Solved it with no mistakes!</option>
-        <option value="Solved it with 1–2 mistakes">Solved it with 1–2 mistakes</option>
-        <option value="Solved it with 3–4 mistakes">Solved it with 3–4 mistakes</option>
+        <option value="Solved it with 1-2 mistakes">Solved it with 1-2 mistakes</option>
+        <option value="Solved it with 3-4 mistakes">Solved it with 3-4 mistakes</option>
         <option value="Didn't finish this time">Didn't finish this time</option>
       </select>
       <div class="score-form-btn-row">
-        <button class="submit-score" onclick="submitScore()">Log my score →</button>
+        <button class="submit-score" onclick="submitScore()">Log my score</button>
       </div>
       <div class="form-thanks" id="form-thanks">Thanks for playing! See you next week. 🎉</div>
     </div>
   </div>
 </div>
-
 <script>
-const CATEGORIES = [
-  {
-    name: "Found on a Ticket",
-    color: "#1a6644", textColor: "#fff",
-    words: ["ACTIVITY", "TIME LOG", "TASK", "PURCHASE ORDER"],
-    hint: "These are all tabs you'll find inside a Service Ticket"
-  },
-  {
-    name: "Ways to Update a Customer Account",
-    color: "#7a5c00", textColor: "#fff",
-    words: ["ADD CHARGE", "ADD CREDIT", "ADD PAYMENT", "CREATE INVOICE"],
-    hint: "These are all Quick Actions on a Customer Profile"
-  },
-  {
-    name: "Part of the Customer Profile",
-    color: "#0d3d6b", textColor: "#fff",
-    words: ["JOURNAL", "CONTACTS", "PORTAL USERS", "RELATED ACCOUNTS"],
-    hint: "These are tabs under the Overview section of a Customer Profile"
-  },
-  {
-    name: "Used to Schedule & Assign Work",
-    color: "#4a1a5e", textColor: "#fff",
-    words: ["CALENDAR", "DISPATCH BOARD", "TICKET", "TIMELINE"],
-    hint: "These tools in the Scheduling module help assign and track work"
-  }
-];
-
-const colorEmoji = { "#1a6644":"🟢", "#7a5c00":"🟡", "#0d3d6b":"🔵", "#4a1a5e":"🟣" };
-let tiles = [], selected = [], mistakes = 0, solved = [], guessHistory = [], gameOver = false;
-
-function init() {
-  tiles = CATEGORIES.flatMap(c => c.words.map(w => ({ word: w, category: c.name })));
-  selected = []; mistakes = 0; solved = []; guessHistory = []; gameOver = false;
-  document.getElementById('solved-area').innerHTML = '';
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('score-form').style.display = 'block';
-  document.getElementById('form-thanks').style.display = 'none';
-  document.getElementById('msg').textContent = '';
-  ['d0','d1','d2','d3'].forEach(id => document.getElementById(id).classList.remove('used'));
-  ['shuffle-btn','deselect-btn','submit-btn'].forEach(id => document.getElementById(id).disabled = id !== 'shuffle-btn');
-  shuffleTiles(true);
-}
-
-function shuffleTiles(first) {
-  const remaining = tiles.filter(t => !solved.includes(t.category));
-  for (let i = remaining.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-  }
-  tiles = [...tiles.filter(t => solved.includes(t.category)), ...remaining];
-  if (!first) renderGrid();
-}
-
-function renderGrid() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-  tiles.filter(t => !solved.includes(t.category)).forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'tile' + (selected.includes(t.word) ? ' selected' : '');
-    btn.textContent = t.word;
-    btn.onclick = () => toggleSelect(t.word, btn);
-    grid.appendChild(btn);
-  });
-  updateButtons();
-}
-
-function toggleSelect(word, btn) {
-  if (gameOver) return;
-  if (selected.includes(word)) {
-    selected = selected.filter(w => w !== word);
-    btn.classList.remove('selected');
-  } else {
-    if (selected.length >= 4) return;
-    selected.push(word);
-    btn.classList.add('selected', 'pop');
-    setTimeout(() => btn.classList.remove('pop'), 300);
-  }
-  updateButtons();
-}
-
-function deselectAll() {
-  selected = [];
-  document.querySelectorAll('.tile.selected').forEach(el => el.classList.remove('selected'));
-  updateButtons();
-}
-
-function updateButtons() {
-  document.getElementById('submit-btn').disabled = selected.length !== 4;
-  document.getElementById('deselect-btn').disabled = selected.length === 0;
-}
-
-function submitGuess() {
-  if (selected.length !== 4) return;
-  const cat = CATEGORIES.find(c =>
-    selected.every(w => c.words.includes(w)) && c.words.every(w => selected.includes(w))
-  );
-  guessHistory.push({ correct: !!cat, words: selected.slice(), category: cat });
-  if (cat) {
-    solved.push(cat.name);
-    const row = document.createElement('div');
-    row.className = 'solved-row';
-    row.style.background = cat.color;
-    row.style.color = cat.textColor;
-    row.innerHTML = `<div class="cat-name">${cat.name}</div><div class="cat-words">${cat.words.join(' · ')}</div>`;
-    document.getElementById('solved-area').appendChild(row);
-    tiles = tiles.filter(t => t.category !== cat.name);
-    selected = [];
-    showMsg('Correct! ' + cat.hint, '#6EBE4F');
-    if (solved.length === CATEGORIES.length) { setTimeout(endGame, 700); return; }
-  } else {
-    const almost = CATEGORIES.find(c => selected.filter(w => c.words.includes(w)).length === 3);
-    mistakes++;
-    document.getElementById('d' + (mistakes - 1)).classList.add('used');
-    document.querySelectorAll('.tile.selected').forEach(el => {
-      el.classList.add('shake');
-      setTimeout(() => el.classList.remove('shake'), 400);
-    });
-    showMsg(almost ? 'One away! Keep thinking...' : 'Not quite — try again!', '#ff8c69');
-    if (mistakes >= 4) { setTimeout(endGame, 700); return; }
-  }
-  selected = [];
-  renderGrid();
-}
-
-function showMsg(text, color) {
-  const el = document.getElementById('msg');
-  el.textContent = text;
-  el.style.color = color || '#ccc';
-  setTimeout(() => { el.textContent = ''; }, 3000);
-}
-
-function endGame() {
-  gameOver = true;
-  document.getElementById('grid').innerHTML = '';
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('deselect-btn').disabled = true;
-  document.getElementById('shuffle-btn').disabled = true;
-  const won = solved.length === CATEGORIES.length;
-  document.getElementById('result-screen').style.display = 'block';
-  document.getElementById('result-title').textContent = won ? 'You got it!' : 'Better luck next week!';
-  document.getElementById('result-sub').textContent = won
-    ? `Solved with ${mistakes} mistake${mistakes !== 1 ? 's' : ''}. Great work!`
-    : `You solved ${solved.length} of 4 categories. Here are the answers:`;
-
-  if (!won) {
-    const answerArea = document.getElementById('answer-reveal');
-    answerArea.innerHTML = '';
-    CATEGORIES.filter(c => !solved.includes(c.name)).forEach(c => {
-      const row = document.createElement('div');
-      row.className = 'solved-row';
-      row.style.background = c.color;
-      row.style.color = c.textColor;
-      row.style.marginBottom = '6px';
-      row.innerHTML = `<div class="cat-name">${c.name}</div><div class="cat-words">${c.words.join(' · ')}</div>`;
-      answerArea.appendChild(row);
-    });
-    answerArea.style.display = 'block';
-  }
-  let emojiGrid = 'Rev.io Connections – Week 1\n';
-  guessHistory.forEach(g => {
-    if (g.correct) {
-      const e = colorEmoji[CATEGORIES.find(c => c.name === g.category.name).color];
-      emojiGrid += e + e + e + e + '\n';
-    } else {
-      emojiGrid += CATEGORIES.map(c => colorEmoji[c.color].repeat(g.words.filter(w => c.words.includes(w)).length)).join('') + '\n';
-    }
-  });
-  document.getElementById('share-box').textContent = emojiGrid.trim();
-}
-
-function copyResult() {
-  navigator.clipboard.writeText(document.getElementById('share-box').textContent).then(() => {
-    const btn = document.querySelector('.share-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy result', 1500);
-  });
-}
-
-function submitScore() {
-  window.open('https://forms.office.com/r/bqvCzbMciJ', '_blank');
-  document.getElementById('score-form').style.display = 'none';
-  document.getElementById('form-thanks').style.display = 'block';
-}
-
-  gameOver = false;
-  solved = [];
-  guessHistory = [];
-  mistakes = 0;
-  selected = [];
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('answer-reveal').style.display = 'none';
-  document.getElementById('solved-area').innerHTML = '';
-  document.getElementById('score-form').style.display = 'block';
-  document.getElementById('form-thanks').style.display = 'none';
-  ['d0','d1','d2','d3'].forEach(id => document.getElementById(id).classList.remove('used'));
-  document.getElementById('shuffle-btn').disabled = false;
-  tiles = CATEGORIES.flatMap(c => c.words.map(w => ({ word: w, category: c.name })));
-  shuffleTiles(true);
-  renderGrid();
+const CATEGORIES=[{name:"Found on a Ticket",color:"#1a6644",textColor:"#fff",words:["ACTIVITY","TIME LOG","TASK","PURCHASE ORDER"],hint:"These are all tabs you'll find inside a Service Ticket"},{name:"Ways to Update a Customer Account",color:"#7a5c00",textColor:"#fff",words:["ADD CHARGE","ADD CREDIT","ADD PAYMENT","CREATE INVOICE"],hint:"These are all Quick Actions on a Customer Profile"},{name:"Part of the Customer Profile",color:"#0d3d6b",textColor:"#fff",words:["JOURNAL","CONTACTS","PORTAL USERS","RELATED ACCOUNTS"],hint:"These are tabs under the Overview section of a Customer Profile"},{name:"Used to Schedule & Assign Work",color:"#4a1a5e",textColor:"#fff",words:["CALENDAR","DISPATCH BOARD","TICKET","TIMELINE"],hint:"These tools in the Scheduling module help assign and track work"}];
+const colorEmoji={"#1a6644":"🟢","#7a5c00":"🟡","#0d3d6b":"🔵","#4a1a5e":"🟣"};
+let tiles=[],selected=[],mistakes=0,solved=[],guessHistory=[],gameOver=false;
+function init(){tiles=CATEGORIES.flatMap(c=>c.words.map(w=>({word:w,category:c.name})));selected=[];mistakes=0;solved=[];guessHistory=[];gameOver=false;document.getElementById('solved-area').innerHTML='';document.getElementById('result-screen').style.display='none';document.getElementById('score-form').style.display='block';document.getElementById('form-thanks').style.display='none';document.getElementById('msg').textContent='';['d0','d1','d2','d3'].forEach(id=>document.getElementById(id).classList.remove('used'));document.getElementById('submit-btn').disabled=true;document.getElementById('deselect-btn').disabled=true;document.getElementById('shuffle-btn').disabled=false;shuffleTiles(true);}
+function shuffleTiles(first){const r=tiles.filter(t=>!solved.includes(t.category));for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}tiles=[...tiles.filter(t=>solved.includes(t.category)),...r];if(!first)renderGrid();}
+function renderGrid(){const grid=document.getElementById('grid');grid.innerHTML='';tiles.filter(t=>!solved.includes(t.category)).forEach(t=>{const btn=document.createElement('button');btn.className='tile'+(selected.includes(t.word)?' selected':'');btn.textContent=t.word;btn.onclick=()=>toggleSelect(t.word,btn);grid.appendChild(btn);});updateButtons();}
+function toggleSelect(word,btn){if(gameOver)return;if(selected.includes(word)){selected=selected.filter(w=>w!==word);btn.classList.remove('selected');}else{if(selected.length>=4)return;selected.push(word);btn.classList.add('selected','pop');setTimeout(()=>btn.classList.remove('pop'),300);}updateButtons();}
+function deselectAll(){selected=[];document.querySelectorAll('.tile.selected').forEach(el=>el.classList.remove('selected'));updateButtons();}
+function updateButtons(){document.getElementById('submit-btn').disabled=selected.length!==4;document.getElementById('deselect-btn').disabled=selected.length===0;}
+function submitGuess(){if(selected.length!==4)return;const cat=CATEGORIES.find(c=>selected.every(w=>c.words.includes(w))&&c.words.every(w=>selected.includes(w)));guessHistory.push({correct:!!cat,words:selected.slice(),category:cat});if(cat){solved.push(cat.name);const row=document.createElement('div');row.className='solved-row';row.style.background=cat.color;row.style.color=cat.textColor;row.innerHTML=`<div class="cat-name">${cat.name}</div><div class="cat-words">${cat.words.join(' · ')}</div>`;document.getElementById('solved-area').appendChild(row);tiles=tiles.filter(t=>t.category!==cat.name);selected=[];showMsg('Correct! '+cat.hint,'#6EBE4F');if(solved.length===CATEGORIES.length){setTimeout(endGame,700);return;}}else{const almost=CATEGORIES.find(c=>selected.filter(w=>c.words.includes(w)).length===3);mistakes++;document.getElementById('d'+(mistakes-1)).classList.add('used');document.querySelectorAll('.tile.selected').forEach(el=>{el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);});showMsg(almost?'One away! Keep thinking...':'Not quite — try again!','#ff8c69');if(mistakes>=4){setTimeout(endGame,700);return;}}selected=[];renderGrid();}
+function showMsg(text,color){const el=document.getElementById('msg');el.textContent=text;el.style.color=color||'#ccc';setTimeout(()=>{el.textContent='';},3000);}
+function endGame(){gameOver=true;document.getElementById('grid').innerHTML='';document.getElementById('submit-btn').disabled=true;document.getElementById('deselect-btn').disabled=true;document.getElementById('shuffle-btn').disabled=true;const won=solved.length===CATEGORIES.length;document.getElementById('result-screen').style.display='block';document.getElementById('result-title').textContent=won?'You got it!':'Better luck next week!';document.getElementById('result-sub').textContent=won?`Solved with ${mistakes} mistake${mistakes!==1?'s':''}. Great work!`:`You solved ${solved.length} of 4 categories. Here are the answers:`;if(!won){const a=document.getElementById('answer-reveal');a.innerHTML='';CATEGORIES.filter(c=>!solved.includes(c.name)).forEach(c=>{const row=document.createElement('div');row.className='solved-row';row.style.background=c.color;row.style.color=c.textColor;row.style.marginBottom='6px';row.innerHTML=`<div class="cat-name">${c.name}</div><div class="cat-words">${c.words.join(' · ')}</div>`;a.appendChild(row);});a.style.display='block';}let eg='Rev.io Connections – Week 1\n';guessHistory.forEach(g=>{if(g.correct){const e=colorEmoji[CATEGORIES.find(c=>c.name===g.category.name).color];eg+=e+e+e+e+'\n';}else{eg+=CATEGORIES.map(c=>colorEmoji[c.color].repeat(g.words.filter(w=>c.words.includes(w)).length)).join('')+'\n';}});document.getElementById('share-box').textContent=eg.trim();}
+function copyResult(){navigator.clipboard.writeText(document.getElementById('share-box').textContent).then(()=>{const btn=document.querySelector('.share-btn');btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy result',1500);});}
+async function submitScore(){const name=document.getElementById('player-name').value.trim();const company=document.getElementById('player-company').value.trim();const score=document.getElementById('player-score').value;if(!name||!company||!score){alert('Please fill in all fields before submitting!');return;}const btn=document.querySelector('.submit-score');btn.textContent='Sending...';btn.disabled=true;try{await fetch('https://formspree.io/f/mnjglgkr',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,company,score,week:'Week 1 — Service Module'})});}catch(e){}document.getElementById('score-form').style.display='none';document.getElementById('form-thanks').style.display='block';}
+init();renderGrid();
 </script>
 </body>
 </html>
